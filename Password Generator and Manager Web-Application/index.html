@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Generation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS for the navigation menu */
+        .nav-menu {
+            width: 250px;
+            background-color: #1a1a1a;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 20px 0;
+            transition: width 0.3s, background-color 0.3s;
+            overflow-y: auto; /* Enable scrollbar if content overflows */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu:hover {
+            width: 250px; /* Expand the menu width on hover */
+            background-color: #262626; /* Darken background color on hover */
+        }
+
+        /* Style for navigation links */
+        .nav-link {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            border-left: 5px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: #333; /* Change background color on hover */
+            border-left: 5px solid #4CAF50; /* Highlight border on hover */
+        }
+
+        /* Content container */
+        .content-container {
+            margin-left: 200px; /* Adjust for the width of the navigation menu */
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Animation for page transition */
+        .page-fade {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation menu -->
+    <div class="nav-menu">
+        <h1 style="text-align: center; margin-bottom: 20px; color: #4CAF50;">Navigation</h1>
+        <ul>
+            <li><a class="nav-link" href="generator/generatepasswd.html" id="passwordgeneratorLink">Password Generator</a></li>
+            <li><a class="nav-link" href="retrivepsw.html" id="RetrivepasswordLink">Retrieve Password</a></li>
+            <li><a class="nav-link" href="manager.html" id="passwordmanagerLink">Password Manager</a></li>
+        </ul>
+    </div>
+
+    <!-- Content container for loaded pages -->
+    <div class="content-container">
+        <h1 style="color: rgb(21, 204, 70);text-align: center;">Password Generator and Management</h1>
+        <iframe id="page-iframe" class="page-fade" style="border: none; width: 1000px; height: 80vh;"></iframe>
+    </div>
+
+    <script>
+        // JavaScript to load pages into the iframe
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageIframe = document.getElementById('page-iframe');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = e.target.getAttribute('href');
+                pageIframe.classList.remove('page-fade'); // Remove the fade-in class
+                pageIframe.src = url;
+                setTimeout(() => {
+                    pageIframe.classList.add('page-fade'); // Add the fade-in class after content loads
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

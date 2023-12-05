@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(24, 96, 120);
+        }
+        h1 {
+            text-align: center;
+        }
+        #dataForm {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #000;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: white;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: black; /* Text color for the table header */
+        }
+        td:last-child {
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="background-image: url('/pexels-photo-3374210.jpeg');">
+    <h1>Password Manager</h1>
+
+    <form id="dataForm">
+        <label for="uname">Username:</label>
+        <input type="text" id="uname" name="uname" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="url">URL / App Name:</label>
+        <input type="text" id="url" name="url" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Your Data</h2>
+    <table id="dataTable">
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Url / App name</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+
+    <script>
+        // Load stored data from local storage on page load
+        window.addEventListener('load', function() {
+            const storedData = JSON.parse(localStorage.getItem('passwordData')) || [];
+            const table = document.getElementById('dataTable');
+
+            storedData.forEach((data, index) => {
+                const newRow = table.insertRow(-1);
+                const cell1 = newRow.insertCell(0);
+                const cell2 = newRow.insertCell(1);
+                const cell3 = newRow.insertCell(2);
+                const cell4 = newRow.insertCell(3);
+                const cell5 = newRow.insertCell(4);
+
+                cell1.innerHTML = data.uname;
+                cell2.innerHTML = data.email;
+                cell3.innerHTML = data.password;
+                cell4.innerHTML = data.url;
+                cell5.innerHTML = '<button onclick="deleteRow(' + index + ')">Delete</button>';
+            });
+        });
+
+        function deleteRow(index) {
+            const storedData = JSON.parse(localStorage.getItem('passwordData')) || [];
+            storedData.splice(index, 1);
+            localStorage.setItem('passwordData', JSON.stringify(storedData));
+            location.reload(); // Refresh the page to update the table
+        }
+
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('uname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const url = document.getElementById('url').value;
+
+            const table = document.getElementById('dataTable');
+            const newRow = table.insertRow(-1);
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+            const cell5 = newRow.insertCell(4);
+
+            cell1.innerHTML = name;
+            cell2.innerHTML = email;
+            cell3.innerHTML = password;
+            cell4.innerHTML = url;
+            cell5.innerHTML = '<button onclick="deleteRow(' + (table.rows.length - 1) + ')">Delete</button>';
+
+            // Save data to local storage
+            const storedData = JSON.parse(localStorage.getItem('passwordData')) || [];
+            storedData.push({ uname: name, email: email, password: password, url: url });
+            localStorage.setItem('passwordData', JSON.stringify(storedData));
+
+            // Clear the form
+            document.getElementById('uname').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('url').value = '';
+        });
+    </script>
+</body>
+</html>
